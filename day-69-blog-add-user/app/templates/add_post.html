@@ -1,0 +1,35 @@
+{% include "header.html" %}
+
+<header class="masthead" style="background-image: url('{{ form.img_url.data or url_for('static', filename='assets/img/post-bg.jpg') }}')">
+  <div class="container">
+    <div class="page-heading">
+      <h1>Add a New Post</h1>
+      <span class="subheading">Share your thoughts with the world</span>
+    </div>
+  </div>
+</header>
+
+<main class="mb-4">
+  <div class="container">
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      <div class="form-group mb-2">
+        {{ form.title.label }} {{ form.title(class="form-control") }}
+      </div>
+      <div class="form-group mb-2">
+        {{ form.subtitle.label }} {{ form.subtitle(class="form-control") }}
+      </div>
+      <div class="form-group mb-2">
+        {{ form.body.label }} {{ form.body(class="form-control", rows=6) }}
+      </div>
+      <div class="form-group mb-2">
+        {{ form.img_url.label }} {{ form.img_url(class="form-control") }}
+      </div>
+      <div class="form-group mb-2">
+        {{ form.submit(class="btn btn-primary mt-3") }}
+      </div>
+    </form>
+  </div>
+</main>
+
+{% include "footer.html" %}

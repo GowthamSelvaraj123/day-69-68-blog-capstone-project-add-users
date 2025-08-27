@@ -1,0 +1,57 @@
+{% include "header.html" %}
+
+<!-- Hero Section -->
+<header class="masthead text-white" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ url_for('static', filename='assets/img/home-bg.jpg') }}') center/cover no-repeat;">
+  <div class="container text-center py-5">
+    <h1 class="display-3 fw-bold">Angela's Blog</h1>
+    <p class="lead fst-italic">A collection of random musings</p>
+    {% if current_user.is_authenticated and current_user.is_admin %}
+      <a href="{{ url_for('main.add_post') }}" class="btn btn-lg btn-primary mt-3 shadow">➕ Create New Post</a>
+    {% endif %}
+  </div>
+</header>
+
+<!-- Posts Section -->
+<main class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+
+      {% for post in all_posts %}
+      <div class="card shadow-lg border-0 mb-5 rounded-4 overflow-hidden">
+        {% if post.img_url %}
+        <img src="{{ post.img_url }}" class="card-img-top" alt="Post image" style="max-height: 350px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body p-4">
+          <a href="{{ url_for('main.get_post', post_id=post.id) }}" class="text-decoration-none text-dark">
+            <h2 class="card-title fw-bold">{{ post.title_subtitle }}</h2>
+            <p class="card-text text-muted mt-2">
+              {{ post.body[:180] }}{% if post.body|length > 180 %}...{% endif %}
+            </p>
+          </a>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">
+              Posted by <span class="fw-semibold">{{ post.author.name }}</span>
+              on {{ post.date.strftime('%B %d, %Y') }}
+            </small>
+
+            {% if current_user.is_authenticated and current_user.is_admin %}
+            <div>
+              <a href="{{ url_for('main.add_post') }}" class="btn btn-sm btn-outline-primary me-2">✎ Edit</a>
+              <a href="{{ url_for('main.delete_post', post_id=post.id) }}" class="btn btn-sm btn-outline-danger">✘ Delete</a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- Pagination / Older Posts -->
+      <nav class="d-flex justify-content-end">
+        <a class="btn btn-outline-secondary rounded-pill px-4 py-2" href="#!">Older Posts →</a>
+      </nav>
+
+    </div>
+  </div>
+</main>
+
+{% include "footer.html" %}
